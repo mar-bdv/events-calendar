@@ -433,10 +433,12 @@ function saveEvents() {
 }
 
 function getEvents() {
-    if (localStorage.getItem("events" === null)) {
-        return;
+    const storedEvents = localStorage.getItem("events");
+    console.log(storedEvents); // Проверяем, что хранится в localStorage
+    if (storedEvents) {
+        eventsArr = JSON.parse(storedEvents);
+    } else {
+        eventsArr = [];
     }
-
-    eventsArr.push(...JSON.parse(localStorage.getItem("events")))
-
+    updateEvents(activeDay);
 }
