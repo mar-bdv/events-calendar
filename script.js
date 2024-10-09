@@ -17,6 +17,10 @@ let activeDay;
 let month = today.getMonth();
 let year = today.getFullYear();
 
+
+let eventsArr = [];
+getEvents()
+
 const months = [
     "Январь",
     "Февраль",
@@ -27,14 +31,11 @@ const months = [
     "Июль",
     "Август",
     "Сентябрь",
-    "Октбярь",
+    "Октябрь",
     "Ноябрь",
     "Декабрь",
 
 ];
-
-let eventsArr = [];
-getEvents()
 
 
 function initCalendar() {
@@ -43,8 +44,11 @@ function initCalendar() {
     const prevLastDay = new Date(year, month, 0);
     const prevDays = prevLastDay.getDate();
     const lastDate = lastDay.getDate();
-    const day = firstDay.getDay();
-    const nextDays = 7 - lastDay.getDay() - 1;
+    const day = (firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1); // Начинаем с понедельника
+    const nextDays = (lastDay.getDay() === 0 ? 6 : 7 - lastDay.getDay());
+
+    //const day = firstDay.getDay();
+    //const nextDays = 7 - lastDay.getDay() - 1;
 
     date.innerHTML = months[month] + " " + year;
 
@@ -272,19 +276,15 @@ function addListner() {
     })
 }
 
-
 function getActiveDay(date) {
     const day = new Date(year, month, date);
     const dayName = day.toLocaleDateString('ru-RU', { weekday: 'long' });
     eventDay.innerHTML = dayName.charAt(0).toUpperCase() + dayName.slice(1);
     eventDate.innerHTML = date + " " + months[month] + " " + year;
 
-    const monthEnding = (month === 2 || month === 7) ? 'та' : 'я';
-    
-    eventDay.innerHTML = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-    eventDate.innerHTML = `${date} ${months[month].slice(0, -1)}${monthEnding} ${year}`;
+    // Убираем monthEnding, чтобы не было лишней логики
+    eventDate.innerHTML = `${date} ${months[month]} ${year}`; // Изменение здесь
 }
-
 
 function updateEvents(date) {
     let events = "";
